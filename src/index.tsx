@@ -3,16 +3,30 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import store from "./store/store"
+import {Provider} from "react-redux";
+import {QueryClient, QueryClientProvider} from "react-query";
+import { persistStore } from 'redux-persist'
+import { PersistGate } from "redux-persist/integration/react";
+import {memberPersist} from "./store/memberPersist";
 
+// const persistor = persistStore(memberPersist);
+const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
+        {/*<PersistGate persistor={persistor} loading={null}>*/}
+            {/*<React.StrictMode>*/}
+            <App />
+            {/*</React.StrictMode>*/}
+        {/*</PersistGate>*/}
+    </Provider>
+    </QueryClientProvider>
 );
-
+export type RootState = ReturnType<typeof store.getState>
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
